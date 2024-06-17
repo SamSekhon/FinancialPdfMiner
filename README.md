@@ -19,13 +19,49 @@ The goal of FinancialPDFMiner is to automate the extraction of financial data fr
   - **'StatementName'_model_mnb.sav**: Trained Naive Bayes Multinomial classifier model file. Current support for Financial Position and Income Statement.
   - **'StatementName'_vocab.txt**: Vocabulary file for creating the feature matrix for the specific statement.
 
-### Classification Models
+## Classification Models
 
 The models used in FinancialPDFMiner are trained Naive Bayes Multinomial classifiers. Each model (`model.sav`) in the `models/` directory is accompanied by a vocabulary file to create the feature matrix. These models were trained using a diverse set of labeled financial data, enabling them to classify pages within PDF documents as relevant financial statements with high accuracy.
 
 The classification process utilizes a Bag of Words representation, where the presence of specific words (from the respective vocabularies) in a page's content determines its classification as an income statement or cash flow statement.
 
 These models play a crucial role in automating the initial identification of relevant financial statements within PDF documents, streamlining the subsequent extraction and parsing processes.
+
+## Parsing Module
+
+The parsing module in this project extracts crucial information from financial statements using a structured approach. Here’s how it works:
+
+### Row Wise Parsing
+
+Financial statements typically follow a format where each line contains structured data.
+"Revenue 133,130 133,110"
+
+The parsing begins by using regular expressions (regex) to extract these structured lines row by row from the financial statement pages. Each line is parsed to identify labels and their associated numeric values.
+
+### Page Wise Parsing
+
+After extracting data row by row, the parsing module aggregates this information to understand the structure of the financial statement. Key tasks in this phase include:
+
+- **Determining the Number of Periods:** Based on the row-wise parsing results, the module identifies the number of periods of historical data available (e.g., in the above example, there are 2 periods: 133,130 and 133,110).
+
+- **Cleaning and Standardization:** Special symbols such as dashes (—), m-dashes (–), and others are cleaned or standardized during this phase to ensure consistency in data representation.
+
+### Date Extraction
+
+Using regex, the parsing module identifies and extracts dates embedded within the financial statements. These dates are crucial for organizing the parsed data accurately.
+
+### Data Representation
+
+Finally, the parsed information is structured and organized into a dataframe format. This format allows for easy manipulation, analysis, and integration with other data sources or analytical tools.
+
+#### Example Workflow
+
+1. **Row-wise Parsing:** Identify lines matching the expected format.
+2. **Page-wise Analysis:** Aggregate data to understand historical periods and clean special symbols.
+3. **Date Extraction:** Use regex patterns to locate and extract dates.
+4. **Dataframe Creation:** Structure parsed data into a dataframe for further processing.
+
+This approach ensures that the financial data extracted from statements is accurate, structured, and ready for subsequent analysis or reporting tasks.
 
 ## Installation
 

@@ -1,10 +1,23 @@
+# Standard library imports
+import pickle
+
+# Third-party imports
 import pandas as pd
 import numpy as np
-import pickle
 import more_itertools as mit
 
-
 def create_feature_matrix(path, vocab_filename, df):
+    """
+    Create a feature matrix based on vocabulary frequency and document words.
+
+    Args:
+        path (str): Path to vocabulary files.
+        vocab_filename (str): Filename of vocabulary.
+        df (pandas.DataFrame): DataFrame containing words extracted from documents.
+
+    Returns:
+        pandas.DataFrame: Feature matrix containing word counts and dummy variables.
+    """
     with open(f"{path}{vocab_filename}") as file:
         vocab_freq = [line.strip() for line in file]
 
@@ -37,6 +50,15 @@ def create_feature_matrix(path, vocab_filename, df):
 
 
 def create_tfidf_vocab(feature_matrix):
+    """
+    Create TF-IDF vocabulary matrix based on the feature matrix.
+
+    Args:
+        feature_matrix (pandas.DataFrame): Feature matrix with word counts and dummy variables.
+
+    Returns:
+        pandas.DataFrame: TF-IDF weighted feature matrix.
+    """
     vocab_freq = np.sum(feature_matrix > 0, axis=0)
     idf_vocab = np.log(len(feature_matrix) / vocab_freq)
     tf_idf_vocab = feature_matrix * idf_vocab
@@ -47,6 +69,18 @@ def create_tfidf_vocab(feature_matrix):
 
 
 def create_model_predictions(path, model_filename, feature_df, original_df):
+    """
+    Create predictions using a trained model.
+
+    Args:
+        path (str): Path to model files.
+        model_filename (str): Filename of the trained model.
+        feature_df (pandas.DataFrame): DataFrame containing features for prediction.
+        original_df (pandas.DataFrame): Original DataFrame with file and page number information.
+
+    Returns:
+        pandas.DataFrame: DataFrame with file, page number, and model predictions.
+    """
     model = pickle.load(open(path + model_filename, "rb"))
     y_pred = model.predict(feature_df)
 
@@ -59,6 +93,15 @@ def create_model_predictions(path, model_filename, feature_df, original_df):
 
 
 def helper_clean_predictions(df_model_predictions):
+    """
+    Clean predictions by filtering and organizing page numbers.
+
+    Args:
+        df_model_predictions (pandas.DataFrame): DataFrame with model predictions.
+
+    Returns:
+        pandas.DataFrame: DataFrame with cleaned and organized predictions.
+    """
     # filter to keep only the predictions
     df = df_model_predictions.loc[df_model_predictions.Y_PRED == 1]
 
@@ -82,6 +125,16 @@ def helper_clean_predictions(df_model_predictions):
 
 
 def create_predictions(model_pipeline_dict, df):
+    """
+    Create predictions pipeline: feature matrix creation, TF-IDF calculation, model predictions, and cleaning.
+
+    Args:
+        model_pipeline_dict (dict): Dictionary containing model pipeline parameters.
+        df (pandas.DataFrame): DataFrame containing data to process.
+
+    Returns:
+        pandas.DataFrame: DataFrame with cleaned predictions.
+    """
     # create features matrix
     feature_matrix = create_feature_matrix(
         model_pipeline_dict["model_objects_filepath"],
