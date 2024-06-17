@@ -8,6 +8,7 @@ __pycache__/
 
 # misc code
 OG_Code/
+.DS_Store
 
 # Distribution / packaging
 .Python
