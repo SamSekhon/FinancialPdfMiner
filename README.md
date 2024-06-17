@@ -6,6 +6,13 @@ FinancialPDFMiner is an NLP-based tool designed to extract financial statements 
 
 The goal of FinancialPDFMiner is to automate the extraction of financial data from PDF files, which are commonly used for publishing financial statements. This tool streamlines the extraction process by leveraging machine learning for page classification and customizable parsing rules for data extraction.
 
+The process follows the following steps:
+
+1. **Read:** PDF File is read using Pytesseract (optionally EasyOCR) with OSD correction if needed. Each page is saved as a seperate chunk.
+2. **Classify:** Multinomial Naives Bayes Classifier is used to tag each extracted page. The classifier assigns each page 1 or 0 based on the probability of it being the target page. (Income Statement, Financial Position)
+3. **Parse:** Pages tagged as 1 or the target page are scraped using the parser module. See below for full details on the parsing steps.
+
+
 ## Demo: Income Statement
 
 **INPUT**
