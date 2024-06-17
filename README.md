@@ -6,6 +6,14 @@ FinancialPDFMiner is an NLP-based tool designed to extract financial statements 
 
 The goal of FinancialPDFMiner is to automate the extraction of financial data from PDF files, which are commonly used for publishing financial statements. This tool streamlines the extraction process by leveraging machine learning for page classification and customizable parsing rules for data extraction.
 
+## Demo: Income Statement
+
+**INPUT**
+![Alt text](<data/income_pdf.png>)
+
+**OUTPUT**
+![Alt text](<data/incomeextract.jpg>)
+
 ## Files and Functionality
 
 - **main.py**: Main script integrating the entire process:
