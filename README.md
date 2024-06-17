@@ -10,11 +10,22 @@ The goal of FinancialPDFMiner is to automate the extraction of financial data fr
 
 - **main.py**: Main script integrating the entire process:
   - **OCR and PDF Reading**: Utilizes `read` from `FinancialMiner.Read` to read PDFs using OCR.
-  - **Classification**: Uses `create_predictions` from `FinancialMiner.ClassifyPDF` to classify pages as financial statements of interest. It uses a bag of words classification model to 
+  - **Classification**: Uses `create_predictions` from `FinancialMiner.ClassifyPDF` to classify pages as financial statements of interest.
   - **Parsing**: Executes `run` from `FinancialMiner.parsing.ParsePdf` to parse and extract information from identified financial statement pages using defined parsing rules.
 
-- **config.yaml**: Configuration file containing settings for parser rules and PDF classification parameters. Currently supports configuration for income and cash flow statements extraction.
+- **config.yaml**: Configuration file containing settings for parser rules and PDF classification parameters. Currently supports configuration for income and financial position statements extraction.
 
+- **models/**:
+  - **'StatementName'_model_mnb.sav**: Trained Naive Bayes Multinomial classifier model file. Current support for Financial Position and Income Statement.
+  - **'StatementName'_vocab.txt**: Vocabulary file for creating the feature matrix for the specific statement.
+
+### Classification Models
+
+The models used in FinancialPDFMiner are trained Naive Bayes Multinomial classifiers. Each model (`model.sav`) in the `models/` directory is accompanied by a vocabulary file to create the feature matrix. These models were trained using a diverse set of labeled financial data, enabling them to classify pages within PDF documents as relevant financial statements with high accuracy.
+
+The classification process utilizes a Bag of Words representation, where the presence of specific words (from the respective vocabularies) in a page's content determines its classification as an income statement or cash flow statement.
+
+These models play a crucial role in automating the initial identification of relevant financial statements within PDF documents, streamlining the subsequent extraction and parsing processes.
 
 ## Installation
 
@@ -36,7 +47,7 @@ Ensure all dependencies, including those listed in `requirements.txt`, are insta
 
 1. Ensure your PDF files are placed in the `pdfs` directory or adjust paths accordingly.
 
-2. Modify `config.yaml` to customize parsing rules and classification settings based on your specific needs.
+2. Modify `config.yaml` to select the appropriate model for the statement of interest.
 
 3. Run the main script:
 
