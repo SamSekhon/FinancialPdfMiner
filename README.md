@@ -1,6 +1,10 @@
 # FinancialPDFMiner
 
-FinancialPDFMiner is an NLP-based tool designed to extract financial statements information from PDF documents. The process involves using OCR to read PDFs, employing a classification model to identify relevant financial statement pages, and utilizing a parsing module to extract structured information from those pages.
+The problem I am addressing is the extraction of financial data from Financial Statement PDFs without the need to train a model on a specific dataset or utilize large language models, which can be resource-intensive. In this module, I leverage general accounting principles to create a highly generic parsing module capable of extracting financial information from any of the three core financial statements: Income Statement, Cash Flow Statement, and Statement of Financial Position.
+
+The classification models were trained using labeled open-source data. The champion model is a Naive Bayes classifier, with an XGBoost classifier serving as the secondary (challenger) model. For the modeling approach, I process all the pages of a given PDF and classify each page as either a target (relevant) or not.
+
+I chose the Naive Bayes model over XGBoost because it performs exceptionally well on statements that are split across multiple pages. This is due to the Naive Bayes model’s independence assumption, meaning it does not consider the relationships between words in the statement for classification, unlike XGBoost, which does. The classification model  achieved an F1 score of 0.99, indicating high accuracy and reliability in identifying financial statements in a given PDF.
 
 ## Overview
 
